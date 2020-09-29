@@ -1,3 +1,112 @@
-h1 {
-  color: cornflowerblue;
+/* Обнуление*/
+* {padding: 0; margin: 0; border: 0;}
+*,*:before,*:after{-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+aside,nav,footer,header,section{display: block;}
+html,body{height: 100%; min-width: 320px;}
+body{line-height: 1;font-size: 14px; font-family: inherit; -ms-text-size-adjust: 100%;-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+input,button,textarea{font-family: inherit;}
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner{padding: 0;border: 0;}
+a,a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul.li{list-style: none;}
+img{vertical-align: top;}
+
+/* General */
+body {
+  overflow: hidden;
+  min-height: 100%;
+}
+.container {
+  width: 100%;
+  max-width: 1030px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+.btn {
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #f8f9fa;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  background-color: inherit;
+  color: white;
+}
+/* Header */
+.header {
+  background: #007BFF;
+  padding: 0.5rem 1rem;
+}
+.header_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  max-width: 1030px;
+}
+.header_a {
+  color: white;
+  padding: .32rem;
+  margin: 0 1rem 0 0;
+  font-size: 1.25rem;
+  text-decoration: none;
+  line-height: inherit;
+  white-space: normal;
+}
+.header_btn {
+  opacity: .65;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: .05rem .2rem;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* Main */
+/* Search */
+.search {
+  background-color: #BED3EA;
+  min-height: 200px;
+  padding: 20px 10px 0 10px;
+  margin-bottom: 1rem;
+}
+.searchInputs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.searchInputs_input{
+  margin: 0 10px 0 0;
+  padding: 5px .5rem;
+  font-size: 0.9rem;
+
+  line-height: 1;
+  border-radius: .25rem;
+}
+.searchInputs_icon {
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #f8f9fa;
+  padding: .1rem .1rem;
+  line-height: 1;
+  width: 25px;
+}
+.searchInputs_icon img {
+  width: 15px;
+  height: 15px;
+}
+.searchOutputs {
+  margin: 0 0 15px 20px;
+}
+h4 {
+  color: black;
 }
