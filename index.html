@@ -20,14 +20,26 @@
         <div class="container">
             <section class="search">
                 <div class="searchInputs">
-                    <input class="searchInputs_input" type="text" placeholder="Search">
-                    <button class="btn searchInputs_icon "><img src="./images/searchIcon.png" alt="Search"></button>
+                    <input id="searchInputs_input" type="text" placeholder="Search">
+                    <button class="btn searchInputs_icon btn_disable"><img src="./images/searchIcon.png" alt="Search"></button>
                 </div>
                 <div class="searchOutputs">
                     <h4>Recent searches: </h4>
-                    <div class="searchOutputs_block"></div>
+                    <div class="searchOutputs_block">
+                        <div class="searchOutputs_block_resentSearches">
+                            <ul id="urlParams"></ul>
+                        </div>
+                        <div>
+                            <ul id="listOfProperties"></ul>
+                        </div>
+                        <div id="noItems" class="noItems">There were no properties found for
+                            the given location.</div>
+                    </div>
                 </div>
             </section>
+
+            <section class="listOfProperties"></section>
+            <section class="recentSearchesList"></section>
         </div>
     </main>
 
