@@ -1,16 +1,20 @@
-import { forbiddenSymbols, searchInput, searchIcon, ulURL } from "./constants.js";
+import { forbiddenSymbols, searchInput, searchIcon, ulURL, btnLoad, lastItemMessage } from "./constants.js";
 
 export class SearchComponent {
 
-    request
+    requestName
+    requestsArr = []
     params = {
         per_page: 5,
         page: 1
     }
 
+    fetchMoreItemsCb = this.fetchMoreItemsHandler.bind(this)
+
     runMethods() {
         this.fetchPropertiesInput()
         this.fetchPropertiesButton()
+        this.fetchMoreItems()
     }
 
     getURl(requestName) {
@@ -25,23 +29,39 @@ export class SearchComponent {
             .then(response => {
                 if (response.status === 200) {
                     return response.json()
+                }  if (response.status === 404) {
+                    console.log('no items')
                 } else {
                     throw new Error('Something goes wrong')
                 }
             })
             .then(response => {
-                if (response.length !== 0) this.showRequests(requestName)
+                const success = response.length === this.params.per_page
+                const lastItemsReceived = response.length < 5 && response.length > 0
+                const failure = response.length === 0
+
+                if (success) {
+                    this.showRequests(requestName)
+                    btnLoad.classList.remove('hide')
+                    lastItemMessage.classList.add('hide')
+                }
+                if (lastItemsReceived) {
+                    this.showNoMoreItems()
+                    btnLoad.classList.add('hide')
+                }
+                if (failure) btnLoad.classList.add('hide')
+
                 document.dispatchEvent(new CustomEvent('requestResult', {
                     detail: { requestResult: response }
                 }))
 
             })
-            .catch(err => console.error(err))
-
+            .catch(err => console.error(err.message))
     }
     fetchPropertiesInput() {
         const validTextBind = this.validateText.bind(this)
         const fetchBind = this.fetchPropertiesHandler.bind(this)
+        const getRequestNameBind = this.getRequestName.bind(this)
 
         searchInput.addEventListener('keyup', function (e) {
             const requestBody = this.value
@@ -56,12 +76,14 @@ export class SearchComponent {
             }
             if (correctData) {
                 fetchBind(requestBody)
+                getRequestNameBind(requestBody)
                 searchInput.value = ''
             }
         })
     }
     fetchPropertiesButton() {
         const fetchBind = this.fetchPropertiesHandler.bind(this)
+        const getRequestNameBind = this.getRequestName.bind(this)
 
         searchIcon.addEventListener('click', function (e) {
             const requestBody = searchInput.value
@@ -70,17 +92,34 @@ export class SearchComponent {
             if (!correctData) return
             if (correctData) {
                 fetchBind(requestBody)
+                getRequestNameBind(requestBody)
                 searchInput.value = ''
             }
         })
     }
 
+    showNoMoreItems() {
+        lastItemMessage.classList.toggle('hide')
+    }
     showRequests(requestName) {
         const li = document.createElement('li')
+
+        if (this.requestsArr.some(el => el === requestName)) return
+        this.requestsArr = [...this.requestsArr, requestName]
         li.innerHTML = `${requestName}`
         li.classList.add('urlParams_li')
-
         ulURL.append(li)
+    }
+
+    getRequestName(name) {
+        this.requestName = name
+    }
+    fetchMoreItemsHandler() {
+        this.params.page++
+        this.fetchPropertiesHandler(this.requestName)
+    }
+    fetchMoreItems() {
+        btnLoad.addEventListener('click', this.fetchMoreItemsCb)
     }
 
     validateText(text) {

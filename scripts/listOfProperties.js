@@ -1,13 +1,14 @@
 import { ListItem } from "./listItem.js";
-import { ul, noItems } from './constants.js'
+import { ul, noItems, btnUp } from './constants.js'
 
 
 export class ListComponent {
 
-    scrollItem = 0
+    scrollElement = 5
     listOfProperties = []
 
     listOfLoadedCb = this.listOfLoadedHandler.bind(this)
+    windowScrollCb = this.windowScrollHandler.bind(this)
 
     render(arr) {
         arr.forEach(el => {
@@ -28,11 +29,13 @@ export class ListComponent {
 
             this.listOfProperties = [...this.listOfProperties, beer]
         })
-
         this.clearListOfProperties()
         this.render(this.listOfProperties)
+        if (this.listOfProperties.length >= 1) {
+            this.scrollToElement()
+            this.windowScroll()
+        }
         this.showMessageNoItems()
-        this.scrollToElement()
     }
     listOfLoaded() {
         document.addEventListener('requestResult', e => this.listOfLoadedCb(e))
@@ -44,10 +47,28 @@ export class ListComponent {
     }
 
     scrollToElement() {
+        const element = document.querySelector('.resultList')
         const elements = document.querySelectorAll('.resultList')
-        const focusedElement = elements[this.scrollItem]
+        const secondFetch = elements.length > this.scrollElement
 
-        if (focusedElement) focusedElement.scrollIntoView({block: 'start', behavior: 'smooth'})
+        if (secondFetch) return
+        if (element) element.scrollIntoView({block: 'start', behavior: 'smooth'})
+    }
+
+    windowScrollHandler(elemCoordsTop) {
+        let scrolled = window.pageYOffset
+
+        if (scrolled > elemCoordsTop) {
+            btnUp.classList.remove('hide')
+            btnUp.addEventListener('click', this.scrollToElement)
+        }
+        if (scrolled < elemCoordsTop) btnUp.classList.add('hide')
+    }
+    windowScroll() {
+        const elem = document.querySelector('.resultList')
+        const elemCoords = elem.getBoundingClientRect()
+
+        window.addEventListener('scroll', () => this.windowScrollCb(elemCoords.top))
     }
 
     clearListOfProperties() {
@@ -56,7 +77,7 @@ export class ListComponent {
 
     showMessageNoItems() {
         if (this.listOfProperties.length !== 0) {
-            noItems.classList.add('noItems')
-        } else  noItems.classList.remove('noItems')
+            noItems.classList.add('hide')
+        } else  noItems.classList.remove('hide')
     }
 }

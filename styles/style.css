@@ -132,6 +132,39 @@ li {
   height: 120px;
   width: 30px;
 }
+#listOfProperties {
+  margin: 0 20px 0 0;
+}
+#listOfProperties > li:last-child {
+  padding: 0  0 15px 0;
+}
+.listOfPropertiesBtns {
+  width: 65px;
+  margin: 10px auto;
+}
+.listOfPropertiesBtns > button {
+  width: 65px;
+  height: 25px;
+  color: #007BFF;
+  border-color: #007BFF;
+  padding: 3px 3px;
+  font-weight: 300;
+  text-align: center;
+  vertical-align: middle;
+
+  font-size: .75rem;
+  line-height: 1;
+  border-radius: .25rem;
+  background-color: inherit;
+}
+.btnUp {
+  position: fixed;
+  bottom: 25px;
+  right: 20px;
+  color: red !important;
+  width: 25px !important;
+  height: 25px !important;
+}
 .item {
   display: flex;
   justify-content: left;
@@ -166,11 +199,9 @@ li {
 .small_contributed {
   color: #007BFF;
 }
-#noItems {
+#noItems, #lastItemMessage {
   margin-top: 15px;
   color: brown;
-}.noItems {
-  display: none;
 }
 .btn_disable {
   cursor: not-allowed;
@@ -183,9 +214,15 @@ li {
   border: 1px solid cornflowerblue;
   border-radius: .25rem;
   padding: 10px;
-  margin: 0 5px 0 0;
+  margin: 0 25px 0 0;
 }
 .urlParams_li {
   color: red;
-
+}
+#lastItemMessage {
+  margin: 5px 25px 10px 0;
+  border: 1px solid cornflowerblue;
+  color: red;
+  padding: 5px;
+  text-align: center;
 }

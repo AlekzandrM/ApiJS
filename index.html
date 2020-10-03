@@ -31,14 +31,21 @@
                         </div>
                         <div>
                             <ul id="listOfProperties"></ul>
+                            <div id="lastItemMessage" class="hide">
+                                No more items found
+                            </div>
+                            <div class="listOfPropertiesBtns">
+                                <button class="btn btnLoad loadUP hide">Load more</button>
+                                <button class="btn btnUp loadUP hide">&uarr;</button>
+                            </div>
                         </div>
-                        <div id="noItems" class="noItems">There were no properties found for
-                            the given location.</div>
+                        <div id="noItems" class="hide">
+                            There were no properties found for the given location.
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="listOfProperties"></section>
             <section class="recentSearchesList"></section>
         </div>
     </main>
