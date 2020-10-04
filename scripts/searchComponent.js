@@ -1,4 +1,4 @@
-import { forbiddenSymbols, searchInput, searchIcon, ulURL, btnLoad, lastItemMessage, ul } from "./constants.js";
+import { forbiddenSymbols, searchInput, searchIcon, ulURL, btnLoad, lastItemMessage } from "./constants.js";
 
 export class SearchComponent {
 
@@ -10,6 +10,7 @@ export class SearchComponent {
     }
 
     fetchMoreItemsCb = this.fetchMoreItemsHandler.bind(this)
+    showRequestsCb = this.showRequestsHandler.bind(this)
 
     runMethods() {
         this.fetchPropertiesInput()
@@ -46,6 +47,7 @@ export class SearchComponent {
                     lastItemMessage.classList.add('hide')
                 }
                 if (lastItemsReceived) {
+                    this.showRequests(requestName)
                     this.showNoMoreItems()
                     btnLoad.classList.add('hide')
                 }
@@ -58,16 +60,17 @@ export class SearchComponent {
             })
             .catch(err => console.error(err.message))
     }
+
     fetchPropertiesInput() {
         const validTextBind = this.validateText.bind(this)
-        const fetchBind = this.fetchPropertiesHandler.bind(this)
-        const setRequestNameBind = this.setRequestName.bind(this)
         const getRequestNameBind = this.getRequestName.bind(this)
+        const checkInputDataBind = this.checkInputData.bind(this)
 
         searchInput.addEventListener('keyup', function (e) {
             const requestBody = this.value
             const requestName = getRequestNameBind()
-            const correctDataSame = e.key === 'Enter' && requestBody && (requestBody === requestName || requestName === undefined)
+            const correctDataFirst = e.key === 'Enter' && requestBody && (requestBody !== requestName && requestName === undefined)
+            const correctDataSame = e.key === 'Enter' && requestBody && (requestBody === requestName && requestName !== undefined)
             const correctDataNew = e.key === 'Enter' && requestBody && (requestBody !== requestName && requestName !== undefined)
 
             this.classList.remove('invalid')
@@ -78,59 +81,80 @@ export class SearchComponent {
                 searchIcon.classList.toggle('btn_disable')
                 return
             }
-            if (correctDataSame) {
-                fetchBind(requestBody)
-                setRequestNameBind(requestBody)
-                searchInput.value = ''
-            }
-            if (correctDataNew) {
-                document.dispatchEvent(new CustomEvent('clearListEvent'))
-                fetchBind(requestBody)
-                setRequestNameBind(requestBody)
-                searchInput.value = ''
-            }
+            checkInputDataBind(requestBody, requestName, correctDataSame, correctDataNew, correctDataFirst)
         })
     }
+
     fetchPropertiesButton() {
-        const fetchBind = this.fetchPropertiesHandler.bind(this)
-        const setRequestNameBind = this.setRequestName.bind(this)
+        const getRequestNameBind = this.getRequestName.bind(this)
+        const checkInputDataBind = this.checkInputData.bind(this)
 
         searchIcon.addEventListener('click', function (e) {
             const requestBody = searchInput.value
-            const correctData = requestBody
+            const requestName = getRequestNameBind()
+            const correctDataFirst = requestBody && (requestBody !== requestName && requestName === undefined)
+            const correctDataSame = requestBody && (requestBody === requestName && requestName !== undefined)
+            const correctDataNew = requestBody && (requestBody !== requestName && requestName !== undefined)
 
-            if (!correctData) return
-            if (correctData) {
-                fetchBind(requestBody)
-                setRequestNameBind(requestBody)
-                searchInput.value = ''
-            }
+            checkInputDataBind(requestBody, requestName, correctDataSame, correctDataNew, correctDataFirst)
         })
+    }
+
+    checkInputData(requestBody, requestName, correctDataSame, correctDataNew, correctDataFirst) {
+        if (correctDataFirst) {
+            this.setRequestName(requestBody)
+            this.fetchPropertiesHandler(requestBody)
+            searchInput.value = ''
+        }
+        if (correctDataSame) {
+            searchInput.value = ''
+        }
+        if (correctDataNew) {
+            this.setRequestName(requestBody)
+            document.dispatchEvent(new CustomEvent('clearListEvent'))
+            this.fetchPropertiesHandler(requestBody)
+            searchInput.value = ''
+        }
     }
 
     showNoMoreItems() {
         lastItemMessage.classList.toggle('hide')
     }
+
+    showRequestsHandler(requestName) {
+        this.params.page = 1
+        this.fetchPropertiesHandler(requestName)
+
+        document.dispatchEvent(new CustomEvent('clearListEvent'))
+        searchInput.value = requestName
+    }
+
     showRequests(requestName) {
         const li = document.createElement('li')
+        const repeatedName = this.requestsArr.some(el => el === requestName)
 
-        if (this.requestsArr.some(el => el === requestName)) return
-        this.requestsArr = [...this.requestsArr, requestName]
-        li.innerHTML = `${requestName}`
-        li.classList.add('urlParams_li')
-        ulURL.append(li)
+        if (!repeatedName) {
+            this.requestsArr = [...this.requestsArr, requestName]
+            li.innerHTML = `<a href="#"> ${requestName} </a>`
+            li.classList.add('urlParams_li')
+            ulURL.append(li)
+            li.addEventListener('click', () => this.showRequestsCb(requestName))
+        }
     }
 
     getRequestName() {
         return this.requestName
     }
+
     setRequestName(name) {
         this.requestName = name
     }
+
     fetchMoreItemsHandler() {
         this.params.page++
         this.fetchPropertiesHandler(this.requestName)
     }
+
     fetchMoreItems() {
         btnLoad.addEventListener('click', this.fetchMoreItemsCb)
     }

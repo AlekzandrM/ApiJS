@@ -17,6 +17,7 @@ export class ListComponent {
             property.renderItem()
         })
     }
+
     runMethods() {
         this.render(this.listOfProperties)
         this.listOfLoaded()
@@ -44,6 +45,7 @@ export class ListComponent {
 
     getPositionsInObject(obj = {}) {
         const {id, image_url, name, description, contributed_by} = obj
+
         return {id: id, photo: image_url, title: name, description, contributed: contributed_by }
     }
 

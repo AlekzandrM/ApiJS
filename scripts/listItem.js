@@ -10,6 +10,7 @@ export class ListItem {
 
     renderItem() {
         const li = document.createElement('li')
+
         li.innerHTML = `
             <div class="item">
                 <div class="item_photo"><img src="${this.photo}" alt="${this.title}"></div> 
@@ -29,5 +30,4 @@ export class ListItem {
         li.classList.add('resultList')
         ul.append(li)
     }
-
 }

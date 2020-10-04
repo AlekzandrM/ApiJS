@@ -216,7 +216,7 @@ li {
   padding: 10px;
   margin: 0 25px 0 0;
 }
-.urlParams_li {
+.urlParams_li a {
   color: red;
 }
 #lastItemMessage {
