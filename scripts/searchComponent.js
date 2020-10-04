@@ -30,8 +30,6 @@ export class SearchComponent {
             .then(response => {
                 if (response.status === 200) {
                     return response.json()
-                }  if (response.status === 404) {
-                    console.log('no items')
                 } else {
                     throw new Error('Something goes wrong')
                 }
@@ -41,16 +39,8 @@ export class SearchComponent {
                 const lastItemsReceived = response.length < 5 && response.length > 0
                 const failure = response.length === 0
 
-                if (success) {
-                    this.showRequests(requestName)
-                    btnLoad.classList.remove('hide')
-                    lastItemMessage.classList.add('hide')
-                }
-                if (lastItemsReceived) {
-                    this.showRequests(requestName)
-                    this.showNoMoreItems()
-                    btnLoad.classList.add('hide')
-                }
+                if (success) this.getSuccessResponse(requestName)
+                if (lastItemsReceived) this.getLastItemsReceived(requestName)
                 if (failure) btnLoad.classList.add('hide')
 
                 document.dispatchEvent(new CustomEvent('requestResult', {
@@ -100,21 +90,35 @@ export class SearchComponent {
         })
     }
 
+    getSuccessResponse(requestName) {
+        this.showRequests(requestName)
+        btnLoad.classList.remove('hide')
+        lastItemMessage.classList.add('hide')
+    }
+
+    getLastItemsReceived(requestName) {
+        this.showRequests(requestName)
+        this.showNoMoreItems()
+        btnLoad.classList.add('hide')
+    }
+
     checkInputData(requestBody, requestName, correctDataSame, correctDataNew, correctDataFirst) {
-        if (correctDataFirst) {
-            this.setRequestName(requestBody)
-            this.fetchPropertiesHandler(requestBody)
-            searchInput.value = ''
-        }
-        if (correctDataSame) {
-            searchInput.value = ''
-        }
-        if (correctDataNew) {
-            this.setRequestName(requestBody)
-            document.dispatchEvent(new CustomEvent('clearListEvent'))
-            this.fetchPropertiesHandler(requestBody)
-            searchInput.value = ''
-        }
+        if (correctDataFirst) this.checkInputDataCorrectDataFirst(requestBody)
+        if (correctDataSame) searchInput.value = ''
+        if (correctDataNew) this.checkInputDataCorrectDataNew(requestBody)
+    }
+
+    checkInputDataCorrectDataFirst(requestBody) {
+        this.setRequestName(requestBody)
+        this.fetchPropertiesHandler(requestBody)
+        searchInput.value = ''
+    }
+
+    checkInputDataCorrectDataNew(requestBody) {
+        this.setRequestName(requestBody)
+        document.dispatchEvent(new CustomEvent('clearListEvent'))
+        this.fetchPropertiesHandler(requestBody)
+        searchInput.value = ''
     }
 
     showNoMoreItems() {

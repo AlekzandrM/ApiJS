@@ -10,6 +10,7 @@ export const noItems = document.getElementById('noItems')
 export const btnLoad = document.querySelector('.btnLoad')
 export const btnUp = document.querySelector('.btnUp')
 export const lastItemMessage = document.getElementById('lastItemMessage')
+export const stopToScrollToElement = 5
 
 
 export const listComponent = new ListComponent()

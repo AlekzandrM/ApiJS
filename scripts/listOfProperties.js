@@ -1,10 +1,9 @@
 import { ListItem } from "./listItem.js";
-import { ul, noItems, btnUp } from './constants.js'
+import { ul, noItems, btnUp, stopToScrollToElement } from './constants.js'
 
 
 export class ListComponent {
 
-    scrollElement = 5
     listOfProperties = []
 
     listOfLoadedCb = this.listOfLoadedHandler.bind(this)
@@ -33,37 +32,47 @@ export class ListComponent {
         })
         this.clearList()
         this.render(this.listOfProperties)
-        if (this.listOfProperties.length >= 1) {
-            this.scrollToElement()
-            this.windowScroll()
-        }
+        this.scrollTo()
         this.showMessageNoItems()
     }
     listOfLoaded() {
         document.addEventListener('requestResult', e => this.listOfLoadedCb(e))
     }
 
-    getPositionsInObject(obj = {}) {
-        const {id, image_url, name, description, contributed_by} = obj
+    scrollTo() {
+        if (this.listOfProperties.length >= 1) {
+            this.scrollToElement()
+            this.windowScroll()
+        }
+    }
+
+    getPositionsInObject(receivedList = {}) {
+        const { id, image_url, name, description, contributed_by } = receivedList
 
         return {id: id, photo: image_url, title: name, description, contributed: contributed_by }
     }
 
     scrollToElement() {
-        const element = document.querySelector('.resultList')
-        const elements = document.querySelectorAll('.resultList')
-        const secondFetch = elements.length > this.scrollElement
+        const resultListFirstElement = document.querySelector('.resultList')
+        const resultListAll = document.querySelectorAll('.resultList')
+        const stopToScrolling = resultListAll.length > stopToScrollToElement
 
-        if (secondFetch) return
-        if (element) element.scrollIntoView({block: 'start', behavior: 'smooth'})
+        if (stopToScrolling) return
+        if (resultListFirstElement) resultListFirstElement.scrollIntoView({block: 'start', behavior: 'smooth'})
+    }
+
+    scrollToElementFromBtnUp() {
+        const resultListFirstElement = document.querySelector('.resultList')
+
+        if (resultListFirstElement) resultListFirstElement.scrollIntoView({block: 'start', behavior: 'smooth'})
     }
 
     windowScrollHandler(elemCoordsTop) {
-        let scrolled = window.pageYOffset
+        const scrolled = window.pageYOffset
 
         if (scrolled > elemCoordsTop) {
             btnUp.classList.remove('hide')
-            btnUp.addEventListener('click', this.scrollToElement)
+            btnUp.addEventListener('click', this.scrollToElementFromBtnUp)
         }
         if (scrolled < elemCoordsTop) btnUp.classList.add('hide')
     }
