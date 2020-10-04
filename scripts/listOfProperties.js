@@ -9,6 +9,7 @@ export class ListComponent {
 
     listOfLoadedCb = this.listOfLoadedHandler.bind(this)
     windowScrollCb = this.windowScrollHandler.bind(this)
+    clearListCb = this.clearListHandler.bind(this)
 
     render(arr) {
         arr.forEach(el => {
@@ -29,7 +30,7 @@ export class ListComponent {
 
             this.listOfProperties = [...this.listOfProperties, beer]
         })
-        this.clearListOfProperties()
+        this.clearList()
         this.render(this.listOfProperties)
         if (this.listOfProperties.length >= 1) {
             this.scrollToElement()
@@ -71,8 +72,12 @@ export class ListComponent {
         window.addEventListener('scroll', () => this.windowScrollCb(elemCoords.top))
     }
 
-    clearListOfProperties() {
+    clearListHandler() {
         ul.innerHTML = null
+        this.listOfProperties = []
+    }
+    clearList() {
+        document.addEventListener('clearListEvent', this.clearListCb)
     }
 
     showMessageNoItems() {

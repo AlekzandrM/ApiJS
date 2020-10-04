@@ -1,4 +1,4 @@
-import { forbiddenSymbols, searchInput, searchIcon, ulURL, btnLoad, lastItemMessage } from "./constants.js";
+import { forbiddenSymbols, searchInput, searchIcon, ulURL, btnLoad, lastItemMessage, ul } from "./constants.js";
 
 export class SearchComponent {
 
@@ -61,29 +61,39 @@ export class SearchComponent {
     fetchPropertiesInput() {
         const validTextBind = this.validateText.bind(this)
         const fetchBind = this.fetchPropertiesHandler.bind(this)
+        const setRequestNameBind = this.setRequestName.bind(this)
         const getRequestNameBind = this.getRequestName.bind(this)
 
         searchInput.addEventListener('keyup', function (e) {
             const requestBody = this.value
-            const correctData = e.key === 'Enter' && requestBody
+            const requestName = getRequestNameBind()
+            const correctDataSame = e.key === 'Enter' && requestBody && (requestBody === requestName || requestName === undefined)
+            const correctDataNew = e.key === 'Enter' && requestBody && (requestBody !== requestName && requestName !== undefined)
 
             this.classList.remove('invalid')
             searchIcon.classList.remove('btn_disable')
+
             if (validTextBind(requestBody)) {
                 this.classList.toggle('invalid')
                 searchIcon.classList.toggle('btn_disable')
                 return
             }
-            if (correctData) {
+            if (correctDataSame) {
                 fetchBind(requestBody)
-                getRequestNameBind(requestBody)
+                setRequestNameBind(requestBody)
+                searchInput.value = ''
+            }
+            if (correctDataNew) {
+                document.dispatchEvent(new CustomEvent('clearListEvent'))
+                fetchBind(requestBody)
+                setRequestNameBind(requestBody)
                 searchInput.value = ''
             }
         })
     }
     fetchPropertiesButton() {
         const fetchBind = this.fetchPropertiesHandler.bind(this)
-        const getRequestNameBind = this.getRequestName.bind(this)
+        const setRequestNameBind = this.setRequestName.bind(this)
 
         searchIcon.addEventListener('click', function (e) {
             const requestBody = searchInput.value
@@ -92,7 +102,7 @@ export class SearchComponent {
             if (!correctData) return
             if (correctData) {
                 fetchBind(requestBody)
-                getRequestNameBind(requestBody)
+                setRequestNameBind(requestBody)
                 searchInput.value = ''
             }
         })
@@ -111,7 +121,10 @@ export class SearchComponent {
         ulURL.append(li)
     }
 
-    getRequestName(name) {
+    getRequestName() {
+        return this.requestName
+    }
+    setRequestName(name) {
         this.requestName = name
     }
     fetchMoreItemsHandler() {
