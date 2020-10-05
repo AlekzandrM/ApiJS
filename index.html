@@ -9,8 +9,62 @@
     <title>ApiJS</title>
 </head>
 <body>
-    <h1>Test</h1>
+    <header class="header">
+        <div class="header_container container">
+            <a href="#" class="header_a">ApiJS</a>
+            <button class="header_btn btn">Favourites (0)</button>
+        </div>
+    </header>
 
+    <main>
+        <div class="container">
+            <section class="search">
+                <div class="searchInputs">
+                    <input id="searchInputs_input" type="text" placeholder="Search">
+                    <button class="btn searchInputs_icon btn_disable"><img src="./images/searchIcon.png" alt="Search"></button>
+                </div>
+                <div class="searchOutputs">
+                    <h4>Recent searches: </h4>
+                    <div class="searchOutputs_block">
+                        <div class="searchOutputs_block_resentSearches">
+                            <ul id="urlParams"></ul>
+                        </div>
+                        <div>
+                            <ul id="listOfProperties"></ul>
+                            <div id="lastItemMessage" class="hide">
+                                No more items found
+                            </div>
+                            <div class="listOfPropertiesBtns">
+                                <button class="btn btnLoad loadUP hide">Load more</button>
+                                <button class="btn btnUp loadUP hide">&uarr;</button>
+                            </div>
+                        </div>
+                        <div id="noItems" class="hide">
+                            There were no properties found for the given location.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recentSearchesList"></section>
+
+            <div class="favouriteModal">
+                <ul class="favouriteModal_ul"></ul>
+            </div>
+            <div class="itemModal">
+                <div class="itemModal_head">Favourites</div>
+                <div class="itemModal_body">
+                    <div class="itemModal_body_img"></div>
+                    <div class="itemModal_body_name"></div>
+                    <div class="itemModal_body_description"></div>
+                    <button class="itemModal_body_button btn remove">Remove</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <footer></footer>
     <script type="module" src="./scripts/main.js"></script>
 </body>
 </html>
