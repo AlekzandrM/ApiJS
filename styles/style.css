@@ -195,6 +195,7 @@ li {
 }
 .small {
   font-size: .7rem;
+  margin: 0 0 5px 0;
 }
 .small_contributed {
   color: #007BFF;
@@ -225,4 +226,20 @@ li {
   color: red;
   padding: 5px;
   text-align: center;
+}
+.spanBtnAdd{
+  /*margin: 0 auto;*/
+}
+.btnAdd{
+  color: white;
+  border-color: white;
+  background-color: #007BFF;
+  line-height: 1;
+  padding: 0.37rem;
+  font-size: .8rem;
+}
+.remove {
+  color: white;
+  border-color: red;
+  background-color: red;
 }

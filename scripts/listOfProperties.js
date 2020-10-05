@@ -1,25 +1,30 @@
 import { ListItem } from "./listItem.js";
-import { ul, noItems, btnUp, stopToScrollToElement } from './constants.js'
+import { ul, noItems, btnUp, stopToScrollToElement, header_btn } from './constants.js'
 
 
 export class ListComponent {
 
     listOfProperties = []
+    favouritesAmount = 0
 
     listOfLoadedCb = this.listOfLoadedHandler.bind(this)
     windowScrollCb = this.windowScrollHandler.bind(this)
     clearListCb = this.clearListHandler.bind(this)
+    addFavouritesAmountCb = this.addFavouritesAmountHandler.bind(this)
+    subtractFavouritesAmountCb = this.subtractFavouritesAmountHandler.bind(this)
 
     render(arr) {
         arr.forEach(el => {
             const property = new ListItem(el)
             property.renderItem()
+            property.runMethods()
         })
     }
 
     runMethods() {
         this.render(this.listOfProperties)
         this.listOfLoaded()
+        this.setFavouritesAmount()
     }
 
     listOfLoadedHandler(e) {
@@ -81,6 +86,19 @@ export class ListComponent {
         const elemCoords = elem.getBoundingClientRect()
 
         window.addEventListener('scroll', () => this.windowScrollCb(elemCoords.top))
+    }
+
+    addFavouritesAmountHandler() {
+        this.favouritesAmount++
+        header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
+    }
+    subtractFavouritesAmountHandler() {
+        this.favouritesAmount--
+        header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
+    }
+    setFavouritesAmount() {
+        document.addEventListener('favouritesAdd', this.addFavouritesAmountCb)
+        document.addEventListener('favouritesSubtract', this.subtractFavouritesAmountCb)
     }
 
     clearListHandler() {

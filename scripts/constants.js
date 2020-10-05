@@ -12,6 +12,8 @@ export const btnUp = document.querySelector('.btnUp')
 export const lastItemMessage = document.getElementById('lastItemMessage')
 export const stopToScrollToElement = 5
 
+export const header_btn = document.querySelector('.header_btn')
+
 
 export const listComponent = new ListComponent()
 export const searchComponent = new SearchComponent()

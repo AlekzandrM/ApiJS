@@ -5,6 +5,7 @@ class PropertiesList {
     showList() {
         listComponent.runMethods()
         searchComponent.runMethods()
+
     }
 }
 

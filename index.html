@@ -12,7 +12,7 @@
     <header class="header">
         <div class="header_container container">
             <a href="#" class="header_a">ApiJS</a>
-            <button class="header_btn btn">Favourites</button>
+            <button class="header_btn btn">Favourites (0)</button>
         </div>
     </header>
 
@@ -47,8 +47,22 @@
             </section>
 
             <section class="recentSearchesList"></section>
+
+            <div class="favouriteModal">
+                <ul class="favouriteModal_ul"></ul>
+            </div>
+            <div class="itemModal">
+                <div class="itemModal_head">Favourites</div>
+                <div class="itemModal_body">
+                    <div class="itemModal_body_img"></div>
+                    <div class="itemModal_body_name"></div>
+                    <div class="itemModal_body_description"></div>
+                    <button class="itemModal_body_button btn remove">Remove</button>
+                </div>
+            </div>
         </div>
     </main>
+
 
     <footer></footer>
     <script type="module" src="./scripts/main.js"></script>
