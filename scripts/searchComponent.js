@@ -5,7 +5,7 @@ export class SearchComponent {
     requestName
     requestsArr = []
     params = {
-        per_page: 5,
+        per_page: 30,
         page: 1
     }
 
@@ -36,7 +36,7 @@ export class SearchComponent {
             })
             .then(response => {
                 const success = response.length === this.params.per_page
-                const lastItemsReceived = response.length < 5 && response.length > 0
+                const lastItemsReceived = response.length < this.params.per_page && response.length > 0
                 const failure = response.length === 0
 
                 if (success) this.getSuccessResponse(requestName)

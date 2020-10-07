@@ -1,11 +1,11 @@
-import { listComponent, searchComponent } from "./constants.js";
+import { listComponent, searchComponent, favouriteModal } from "./constants.js";
 
 
 class PropertiesList {
     showList() {
         listComponent.runMethods()
         searchComponent.runMethods()
-
+        favouriteModal.runMethods()
     }
 }
 

@@ -48,16 +48,26 @@
 
             <section class="recentSearchesList"></section>
 
-            <div class="favouriteModal">
-                <ul class="favouriteModal_ul"></ul>
+            <div class="favouriteModal hide">
+                <div class="favouriteModal_body">
+                    <div class="favouriteModal_body_head">
+                        <span class="favouriteModal_body_head_text">Favourites: </span>
+                        <button class="favouriteModal_body_head_close"> &#10006; </button>
+                    </div>
+                    <ul class="favouriteModal_body_ul"></ul>
+                </div>
+
             </div>
+
             <div class="itemModal">
-                <div class="itemModal_head">Favourites</div>
                 <div class="itemModal_body">
-                    <div class="itemModal_body_img"></div>
-                    <div class="itemModal_body_name"></div>
-                    <div class="itemModal_body_description"></div>
-                    <button class="itemModal_body_button btn remove">Remove</button>
+                    <div class="itemModal_head">Favourites</div>
+                    <div class="itemModal_content">
+                        <div class="itemModal_content_img"></div>
+                        <div class="itemModal_content_name"></div>
+                        <div class="itemModal_content_description"></div>
+                        <button class="itemModal_content_button btn remove">Remove</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import { ul } from "./constants.js";
 
 export class ListItem {
 
-    isFavourite = false
+    changeRemoveBtnStatusFromFavouriteModalCb = this.changeRemoveBtnStatusFromFavouriteModalHandler.bind(this)
 
     constructor({photo, contributed, title, description, id}) {
         this.photo = photo
@@ -14,6 +14,8 @@ export class ListItem {
 
     runMethods() {
         this.addToFavourites()
+        this.changeRemoveBtnStatusFromFavouriteModal()
+        this.removeEvents()
     }
 
     renderItem() {
@@ -58,11 +60,13 @@ export class ListItem {
             btnAdd.innerText = 'Remove'
             btnAdd.classList.add('remove')
             this.favouritesAmountAdd()
+            this.showItemInFavouriteModal()
         }
         if (buttonName === 'Remove') {
             btnAdd.innerText = 'Add'
             btnAdd.classList.remove('remove')
             this.favouritesAmountSubtract()
+            this.removeItemInFavouriteModal()
         }
     }
 
@@ -79,5 +83,26 @@ export class ListItem {
         document.dispatchEvent(new CustomEvent('addToFavourites', {
             detail: { item }
         }))
+    }
+
+    removeItemInFavouriteModal() {
+        document.dispatchEvent(new CustomEvent('removeFromFavourites', {
+            detail: { removeItemID: this.id }
+        }))
+    }
+
+    changeRemoveBtnStatusFromFavouriteModalHandler(e) {
+        e.stopImmediatePropagation()
+        const id = e.detail.id
+        const addRemoveButton = document.getElementById(`${id}`)
+
+        this.checkButtonAdd('Remove', addRemoveButton)
+    }
+    changeRemoveBtnStatusFromFavouriteModal() {
+        document.addEventListener('changeRemoveBtnStatus', e => this.changeRemoveBtnStatusFromFavouriteModalCb(e))
+    }
+
+    removeEvents() {
+        document.removeEventListener('changeRemoveBtnStatus', e => this.changeRemoveBtnStatusFromFavouriteModalCb(e))
     }
 }

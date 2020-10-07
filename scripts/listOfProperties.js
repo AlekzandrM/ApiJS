@@ -96,9 +96,11 @@ export class ListComponent {
         this.favouritesAmount--
         header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
     }
+
     setFavouritesAmount() {
         document.addEventListener('favouritesAdd', this.addFavouritesAmountCb)
         document.addEventListener('favouritesSubtract', this.subtractFavouritesAmountCb)
+        document.addEventListener('deductFavouriteAmountFromModal', this.subtractFavouritesAmountCb)
     }
 
     clearListHandler() {
