@@ -12,6 +12,7 @@ export class ListComponent {
     clearListCb = this.clearListHandler.bind(this)
     addFavouritesAmountCb = this.addFavouritesAmountHandler.bind(this)
     subtractFavouritesAmountCb = this.subtractFavouritesAmountHandler.bind(this)
+    deductFavouriteAmountFromFavorModalCb = this.subtractFavouritesAmountFromFavorModalHandler.bind(this)
 
     render(arr) {
         arr.forEach(el => {
@@ -81,6 +82,7 @@ export class ListComponent {
         }
         if (scrolled < elemCoordsTop) btnUp.classList.add('hide')
     }
+
     windowScroll() {
         const elem = document.querySelector('.resultList')
         const elemCoords = elem.getBoundingClientRect()
@@ -92,15 +94,23 @@ export class ListComponent {
         this.favouritesAmount++
         header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
     }
+
     subtractFavouritesAmountHandler() {
         this.favouritesAmount--
+        if (this.favouritesAmount < 0) this.favouritesAmount = 0
         header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
+    }
+    subtractFavouritesAmountFromFavorModalHandler(e) {
+        const newAmount = e.detail.favouritesAmount
+        this.favouritesAmount--
+        if (this.favouritesAmount < 0) this.favouritesAmount = 0
+        header_btn.innerHTML = `Favourites (${newAmount})`
     }
 
     setFavouritesAmount() {
         document.addEventListener('favouritesAdd', this.addFavouritesAmountCb)
         document.addEventListener('favouritesSubtract', this.subtractFavouritesAmountCb)
-        document.addEventListener('deductFavouriteAmountFromModal', this.subtractFavouritesAmountCb)
+        document.addEventListener('deductFavouriteAmountFromFavorModal', (e) => this.deductFavouriteAmountFromFavorModalCb(e))
     }
 
     clearListHandler() {

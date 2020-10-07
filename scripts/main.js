@@ -1,4 +1,4 @@
-import { listComponent, searchComponent, favouriteModal } from "./constants.js";
+import { listComponent, searchComponent, favouriteModal, oneItemModal } from "./constants.js";
 
 
 class PropertiesList {
@@ -6,6 +6,7 @@ class PropertiesList {
         listComponent.runMethods()
         searchComponent.runMethods()
         favouriteModal.runMethods()
+        oneItemModal.runMethods()
     }
 }
 

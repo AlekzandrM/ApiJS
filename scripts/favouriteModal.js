@@ -30,20 +30,22 @@ export class FavouriteModal {
         })
         this.addToFavouriteList()
         this.removeItemFromButtonRemove()
+        this.removeItemFromListItem()
     }
 
     runMethods() {
         this.openModal()
         this.closeModal()
         this.render()
-        this.addToFavouriteList()
-        this.removeItemFromListItem()
+        // this.addToFavouriteList()
+        // this.removeItemFromListItem()
         this.removeEvents()
     }
 
     openModalHandler() {
+        this.clearList()
+        this.render()
         favModal.classList.remove('hide')
-        this.removeItemFromButtonRemove()
     }
     openModal() {
         header_btn.addEventListener('click', this.openModalCb)
@@ -90,7 +92,10 @@ export class FavouriteModal {
             document.dispatchEvent(new CustomEvent('changeRemoveBtnStatus', {
                 detail: { id }
             }))
-            document.dispatchEvent(new CustomEvent('deductFavouriteAmountFromModal'))
+
+            document.dispatchEvent(new CustomEvent('deductFavouriteAmountFromFavorModal', {
+                detail: { favouritesAmount: filteredList.length}
+            }))
         }
 
         this.favouriteList = [...filteredList]
@@ -117,7 +122,7 @@ export class FavouriteModal {
     }
 
     removeEvents() {
-        document.removeEventListener('removeFromFavourites', e => this.removeFromFavouriteListCb(e.detail.removeItemID))
-        document.removeEventListener('addToFavourites', e => this.addToFavouriteListCb(e))
+        // document.removeEventListener('removeFromFavourites', e => this.removeFromFavouriteListCb(e.detail.removeItemID))
+        // document.removeEventListener('addToFavourites', e => this.addToFavouriteListCb(e))
     }
 }

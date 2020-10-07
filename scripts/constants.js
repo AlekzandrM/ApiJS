@@ -1,6 +1,7 @@
 import { ListComponent } from "./listOfProperties.js";
 import { SearchComponent } from "./searchComponent.js";
 import { FavouriteModal } from "./favouriteModal.js"
+import { ItemModal } from "./itemModal.js";
 
 export const searchInput = document.getElementById('searchInputs_input')
 export const searchIcon = document.querySelector('.searchInputs_icon')
@@ -19,6 +20,11 @@ export const favouriteUl = document.querySelector('.favouriteModal_body_ul')
 export const favModal = document.querySelector('.favouriteModal')
 export const favModalClose = document.querySelector('.favouriteModal_body_head_close')
 
+export const itemModal = document.querySelector('.itemModal')
+export const closeModal = document.querySelector('.itemModal_head_close')
+export const itemContent = document.querySelector('.itemModal_content')
+
 export const listComponent = new ListComponent()
 export const searchComponent = new SearchComponent()
 export const favouriteModal = new FavouriteModal()
+export const oneItemModal = new ItemModal()

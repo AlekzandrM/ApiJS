@@ -1,8 +1,9 @@
-import { ul } from "./constants.js";
+import { ul, itemModal } from "./constants.js";
 
 export class ListItem {
 
     changeRemoveBtnStatusFromFavouriteModalCb = this.changeRemoveBtnStatusFromFavouriteModalHandler.bind(this)
+    openItemModalCb = this.openItemModalHandler.bind(this)
 
     constructor({photo, contributed, title, description, id}) {
         this.photo = photo
@@ -13,9 +14,8 @@ export class ListItem {
     }
 
     runMethods() {
-        this.addToFavourites()
-        this.changeRemoveBtnStatusFromFavouriteModal()
         this.removeEvents()
+        this.openItemModal()
     }
 
     renderItem() {
@@ -26,7 +26,7 @@ export class ListItem {
                 <div class="item_photo"><img src="${this.photo}" alt="${this.title}"></div> 
                 <div class="item_description">
                     <span class="item_description_elem "> 
-                        <span class="bold title">${this.title}</span>
+                        <span class="bold title" id="${this.id}Name"><a>${this.title}</a></span>
                     </span> 
                     <span class="item_description_elem"> 
                         <span class="bold description">Description:</span> ${this.description}
@@ -42,13 +42,16 @@ export class ListItem {
         `
         li.classList.add('resultList')
         ul.append(li)
+        this.addToFavourites()
+        this.changeRemoveBtnStatusFromFavouriteModal()
     }
 
     addToFavourites() {
         const btnAdd = document.getElementById(`${this.id}`)
         const checkButtonAddBind = this.checkButtonAdd.bind(this)
 
-        btnAdd.addEventListener('click', function () {
+        btnAdd.addEventListener('click', function (e) {
+            e.stopImmediatePropagation()
             const buttonName = this.innerText
 
             checkButtonAddBind(buttonName, btnAdd)
@@ -83,6 +86,32 @@ export class ListItem {
         document.dispatchEvent(new CustomEvent('addToFavourites', {
             detail: { item }
         }))
+    }
+
+    showItemInItemModal() {
+        const item = {id: this.id, photo: this.photo, title: this.title, description: this.description}
+
+        document.dispatchEvent(new CustomEvent('addToItemModal', {
+            detail: { item }
+        }))
+    }
+
+    openItemModalEvent() {
+        this.showItemInItemModal()
+        itemModal.classList.remove('hide')
+    }
+    openItemModalHandler() {
+        const btnAddFromList = document.getElementById(`${this.id}Name`)
+        const openItemModalEventBind = this.openItemModalEvent.bind(this)
+
+
+        btnAddFromList.addEventListener('click', () => openItemModalEventBind() )
+    }
+
+    openItemModal() {
+        const itemName = document.getElementById(`${this.id}Name`)
+
+        itemName.addEventListener('click', this.openItemModalCb)
     }
 
     removeItemInFavouriteModal() {
