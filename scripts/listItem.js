@@ -4,6 +4,8 @@ export class ListItem {
 
     changeRemoveBtnStatusFromFavouriteModalCb = this.changeRemoveBtnStatusFromFavouriteModalHandler.bind(this)
     openItemModalCb = this.openItemModalHandler.bind(this)
+    addFavouritesFromItemModalCb = this.addFavouritesFromItemModalHandler.bind(this)
+    removeFavouritesFromItemModalCb = this.removeFavouritesFromItemModalHandler.bind(this)
 
     constructor({photo, contributed, title, description, id}) {
         this.photo = photo
@@ -16,6 +18,8 @@ export class ListItem {
     runMethods() {
         this.removeEvents()
         this.openItemModal()
+        this.addFavouritesFromItemModal()
+        this.removeFavouritesFromItemModal()
     }
 
     renderItem() {
@@ -90,20 +94,43 @@ export class ListItem {
 
     showItemInItemModal() {
         const item = {id: this.id, photo: this.photo, title: this.title, description: this.description}
+        const btn = document.getElementById(`${this.id}`)
 
         document.dispatchEvent(new CustomEvent('addToItemModal', {
-            detail: { item }
+            detail: { item, btn }
         }))
+    }
+
+    addFavouritesFromItemModalHandler(e) {
+        e.stopImmediatePropagation()
+        const id = e.detail.id
+        const btnAdd = document.getElementById(id)
+
+        this.checkButtonAdd('Add', btnAdd)
+    }
+    addFavouritesFromItemModal() {
+        document.addEventListener('addFavouriteFromItemModal', e => this.addFavouritesFromItemModalCb(e))
+    }
+
+    removeFavouritesFromItemModalHandler(e) {
+        e.stopImmediatePropagation()
+        const id = e.detail.id
+        const btnAdd = document.getElementById(id)
+
+        this.checkButtonAdd('Remove', btnAdd)
+    }
+    removeFavouritesFromItemModal() {
+        document.addEventListener('removeFavouriteFromItemModal', e => this.removeFavouritesFromItemModalCb(e))
     }
 
     openItemModalEvent() {
         this.showItemInItemModal()
         itemModal.classList.remove('hide')
     }
+
     openItemModalHandler() {
         const btnAddFromList = document.getElementById(`${this.id}Name`)
         const openItemModalEventBind = this.openItemModalEvent.bind(this)
-
 
         btnAddFromList.addEventListener('click', () => openItemModalEventBind() )
     }

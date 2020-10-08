@@ -41,6 +41,7 @@ export class ListComponent {
         this.scrollTo()
         this.showMessageNoItems()
     }
+
     listOfLoaded() {
         document.addEventListener('requestResult', e => this.listOfLoadedCb(e))
     }
@@ -100,6 +101,7 @@ export class ListComponent {
         if (this.favouritesAmount < 0) this.favouritesAmount = 0
         header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
     }
+
     subtractFavouritesAmountFromFavorModalHandler(e) {
         const newAmount = e.detail.favouritesAmount
         this.favouritesAmount--
@@ -117,6 +119,7 @@ export class ListComponent {
         ul.innerHTML = null
         this.listOfProperties = []
     }
+
     clearList() {
         document.addEventListener('clearListEvent', this.clearListCb)
     }
