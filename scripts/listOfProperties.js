@@ -1,5 +1,6 @@
 import { ListItem } from "./listItem.js";
 import { ul, noItems, btnUp, stopToScrollToElement, header_btn } from './constants.js'
+import { setArrInLocalStorage, getArrInLocalStorage } from './generalMethods.js'
 
 
 export class ListComponent {
@@ -13,6 +14,7 @@ export class ListComponent {
     addFavouritesAmountCb = this.addFavouritesAmountHandler.bind(this)
     subtractFavouritesAmountCb = this.subtractFavouritesAmountHandler.bind(this)
     deductFavouriteAmountFromFavorModalCb = this.subtractFavouritesAmountFromFavorModalHandler.bind(this)
+    reloadSearchesCb = this.reloadSearchesHandler.bind(this)
 
     render(arr) {
         arr.forEach(el => {
@@ -20,6 +22,7 @@ export class ListComponent {
             property.renderItem()
             property.runMethods()
         })
+        this.reloadSearches()
     }
 
     runMethods() {
@@ -40,10 +43,23 @@ export class ListComponent {
         this.render(this.listOfProperties)
         this.scrollTo()
         this.showMessageNoItems()
+        setArrInLocalStorage(this.listOfProperties, 'recentSearches')
     }
 
     listOfLoaded() {
         document.addEventListener('requestResult', e => this.listOfLoadedCb(e))
+    }
+
+    reloadSearchesHandler() {
+        const recentSearches = getArrInLocalStorage('recentSearches')
+        if (recentSearches) {
+            this.listOfProperties = recentSearches
+            this.clearList()
+            this.render(this.listOfProperties)
+        }
+    }
+    reloadSearches() {
+        window.onload = this.reloadSearchesCb
     }
 
     scrollTo() {

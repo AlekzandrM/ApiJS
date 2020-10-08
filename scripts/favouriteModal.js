@@ -37,8 +37,6 @@ export class FavouriteModal {
         this.openModal()
         this.closeModal()
         this.render()
-        // this.addToFavouriteList()
-        // this.removeItemFromListItem()
         this.removeEvents()
     }
 
