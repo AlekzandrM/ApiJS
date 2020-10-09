@@ -6,14 +6,11 @@ import { setArrInLocalStorage, getArrInLocalStorage } from './generalMethods.js'
 export class ListComponent {
 
     listOfProperties = []
-    favouritesAmount = 0
 
     listOfLoadedCb = this.listOfLoadedHandler.bind(this)
     windowScrollCb = this.windowScrollHandler.bind(this)
     clearListCb = this.clearListHandler.bind(this)
-    addFavouritesAmountCb = this.addFavouritesAmountHandler.bind(this)
-    subtractFavouritesAmountCb = this.subtractFavouritesAmountHandler.bind(this)
-    deductFavouriteAmountFromFavorModalCb = this.subtractFavouritesAmountFromFavorModalHandler.bind(this)
+    setFavouritesAmountCb = this.setFavouritesAmountHandler.bind(this)
     reloadSearchesCb = this.reloadSearchesHandler.bind(this)
 
     render(arr) {
@@ -34,12 +31,12 @@ export class ListComponent {
     listOfLoadedHandler(e) {
         const list = e.detail.requestResult
 
+        this.clearList()
         list.forEach(el => {
             const beer = this.getPositionsInObject(el)
 
             this.listOfProperties = [...this.listOfProperties, beer]
         })
-        this.clearList()
         this.render(this.listOfProperties)
         this.scrollTo()
         this.showMessageNoItems()
@@ -52,14 +49,15 @@ export class ListComponent {
 
     reloadSearchesHandler() {
         const recentSearches = getArrInLocalStorage('recentSearches')
+
         if (recentSearches) {
-            this.listOfProperties = recentSearches
             this.clearList()
+            this.listOfProperties = [...recentSearches]
             this.render(this.listOfProperties)
         }
     }
     reloadSearches() {
-        window.onload = this.reloadSearchesCb
+        window.addEventListener('load', this.reloadSearchesCb)
     }
 
     scrollTo() {
@@ -107,28 +105,14 @@ export class ListComponent {
         window.addEventListener('scroll', () => this.windowScrollCb(elemCoords.top))
     }
 
-    addFavouritesAmountHandler() {
-        this.favouritesAmount++
-        header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
-    }
+    setFavouritesAmountHandler(e) {
+        const favAmount = e.detail.favouritesAmount
 
-    subtractFavouritesAmountHandler() {
-        this.favouritesAmount--
-        if (this.favouritesAmount < 0) this.favouritesAmount = 0
-        header_btn.innerHTML = `Favourites (${this.favouritesAmount})`
-    }
-
-    subtractFavouritesAmountFromFavorModalHandler(e) {
-        const newAmount = e.detail.favouritesAmount
-        this.favouritesAmount--
-        if (this.favouritesAmount < 0) this.favouritesAmount = 0
-        header_btn.innerHTML = `Favourites (${newAmount})`
+        header_btn.innerHTML = `Favourites (${favAmount})`
     }
 
     setFavouritesAmount() {
-        document.addEventListener('favouritesAdd', this.addFavouritesAmountCb)
-        document.addEventListener('favouritesSubtract', this.subtractFavouritesAmountCb)
-        document.addEventListener('deductFavouriteAmountFromFavorModal', (e) => this.deductFavouriteAmountFromFavorModalCb(e))
+        document.addEventListener('favouritesAmount', (e) => this.setFavouritesAmountCb(e))
     }
 
     clearListHandler() {

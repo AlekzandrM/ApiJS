@@ -23,6 +23,8 @@ export const favModalClose = document.querySelector('.favouriteModal_body_head_c
 export const itemModal = document.querySelector('.itemModal')
 export const closeModal = document.querySelector('.itemModal_head_close')
 export const itemContent = document.querySelector('.itemModal_content')
+export const btnNameAdd = 'Add'
+export const btnNameRemove = 'Remove'
 
 export const listComponent = new ListComponent()
 export const searchComponent = new SearchComponent()

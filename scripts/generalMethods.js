@@ -1,6 +1,7 @@
 
 export const setArrInLocalStorage = (arr = [], name) => {
     const recentSearches = JSON.stringify(arr)
+
     localStorage.setItem(`${name}`, recentSearches)
 }
 
@@ -13,6 +14,7 @@ export const getArrInLocalStorage = (name) => {
 export const setButtonState = (id, state) => {
     const key = `${id}`
     const btnState = JSON.stringify(state)
+
     localStorage.setItem(key, btnState)
 }
 

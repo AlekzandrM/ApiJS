@@ -53,7 +53,7 @@ export class ItemModal {
         this.btnToAddRemove.classList.add('remove')
         this.render()
         document.dispatchEvent(new CustomEvent('addFavouriteFromItemModal', {
-            detail: { id: this.item.id }
+            detail: { id: this.item.id, item: this.item }
         }))
     }
 
